@@ -20,6 +20,10 @@ jobs:
           java-version: '11'
       - name: Make gradlew executable
         run: chmod +x ./gradlew
+      - name: Access TMDB_API_KEY
+        env:
+          TMDB_API_KEY: ${{ secrets.TMDB_APIKEY }}
+        run: echo tmdb_api_key=\"$TMDB_API_KEY\" > ./local.properties
       - name: Build with Gradle
         run: ./gradlew :app:assemble
       
