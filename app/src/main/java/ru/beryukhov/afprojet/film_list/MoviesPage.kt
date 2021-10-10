@@ -3,8 +3,9 @@ package ru.beryukhov.afprojet.film_list
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -33,21 +34,22 @@ import ru.beryukhov.afprojet.Film
 @Composable
 fun MoviesPagePreview() =
     Scaffold(backgroundColor = colorResource(id = R.color.background)) {
-        MoviesPage(
-            List(32) { FILM },
-            modifier = Modifier.fillMaxSize()
-        )
+        Column {
+            MoviesPage(
+                List(32) { FILM }
+            )
+        }
     }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MoviesPage(films: List<Film>, modifier: Modifier = Modifier) {
-    Column() {
+fun ColumnScope.MoviesPage(films: List<Film>) {
+    Column(modifier = Modifier.weight(1f)) {
         ConstraintLayout(
             Modifier
                 .padding(4.dp)
                 .fillMaxWidth()) {
-            val (ivTitle, listTitle, rvMovieList, ivListType, tvListType) = createRefs()
+            val (ivTitle, listTitle, ivListType, tvListType) = createRefs()
             Image(painter = painterResource(id = R.drawable.ic_locator),
                 contentDescription = "",
                 modifier = Modifier
@@ -99,7 +101,7 @@ fun MoviesPage(films: List<Film>, modifier: Modifier = Modifier) {
         }
         LazyVerticalGrid(
             contentPadding = PaddingValues(4.dp),
-            modifier = modifier,
+            modifier = Modifier.fillMaxHeight(),
             cells = GridCells.Adaptive(minSize = 500.dp)
         ) {
             itemsIndexed(items = films,
