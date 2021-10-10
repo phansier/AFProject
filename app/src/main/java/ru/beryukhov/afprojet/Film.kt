@@ -2,8 +2,8 @@ package ru.beryukhov.afprojet
 
 import androidx.annotation.DrawableRes
 import com.tromian.game.afproject.R
-import ru.beryukhov.afprojet.aa.Actor
-import ru.beryukhov.afprojet.aa.actorsList
+import ru.beryukhov.afprojet.film_details.Actor
+import ru.beryukhov.afprojet.film_details.actorsList
 
 data class Film(
     @DrawableRes val photo: Int,

@@ -1,4 +1,4 @@
-package ru.beryukhov.afprojet.aa
+package ru.beryukhov.afprojet.film_details
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image

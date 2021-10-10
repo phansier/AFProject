@@ -1,4 +1,4 @@
-package ru.beryukhov.afprojet.bb
+package ru.beryukhov.afprojet.film_list
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,7 +24,7 @@ import androidx.constraintlayout.compose.Dimension
 import com.tromian.game.afproject.R
 import ru.beryukhov.afprojet.FILM
 import ru.beryukhov.afprojet.Film
-import ru.beryukhov.afprojet.aa.Stars
+import ru.beryukhov.afprojet.film_details.Stars
 
 @Preview
 @Preview(device = Devices.PIXEL_C)

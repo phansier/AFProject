@@ -1,4 +1,4 @@
-package ru.beryukhov.afprojet.bb
+package ru.beryukhov.afprojet.film_list
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image

@@ -1,4 +1,4 @@
-package ru.beryukhov.afprojet.aa
+package ru.beryukhov.afprojet.film_details
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
