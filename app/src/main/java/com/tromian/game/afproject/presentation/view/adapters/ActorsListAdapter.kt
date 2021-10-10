@@ -49,7 +49,7 @@ class ActorsListAdapter(private val context: Context) :
             viewType: Int
     ): ActorsViewHolder {
         val inflater: LayoutInflater = LayoutInflater.from(context)
-        return ActorsViewHolder(inflater.inflate(R.layout.view_holder_actor, parent, false))
+        return ActorsViewHolder(inflater.inflate(R.layout.item_actor, parent, false))
     }
 
     override fun onBindViewHolder(holder: ActorsViewHolder, position: Int) {
