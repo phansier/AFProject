@@ -24,37 +24,23 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.Dimension.Companion.fillToConstraints
 import com.tromian.game.afproject.R
+import ru.beryukhov.afprojet.FILM
+import ru.beryukhov.afprojet.Film
 
-private const val storylineString =
-    "After the devastating events of Avengers: Infinity War, the universe is in ruins. " +
-            "With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos' " +
-            "actions and restore balance to the universe."
 
 @Preview(device = Devices.PIXEL_C)
 @Preview
 @Composable
 fun FilmPagePreview() {
     FilmPage(
-        title = "Avengers: End Game",
-        age = "13+",
-        genres = "Action, Adventure, Fantasy",
-        rate = 4,
-        reviews = "123 Review",
-        storyLine = storylineString,
-        actors = actorsList + actorsList,
+        film = FILM,
         modifier = Modifier.background(color = colorResource(R.color.background))
     )
 }
 
 @Composable
 fun FilmPage(
-    title: String,
-    age: String,
-    genres: String,
-    rate: Int,
-    reviews: String,
-    storyLine: String,
-    actors: List<Actor>,
+    film: Film,
     modifier: Modifier
 ) {
     rememberScrollState(0)
@@ -88,14 +74,14 @@ fun FilmPage(
                     )
                 }
 
-                Text(text = age,
+                Text(text = film.age,
                     color = colorResource(R.color.white),
                     modifier = Modifier.constrainAs(tvAge) {
                         bottom.linkTo(tvTitle.top, margin = 12.dp)
                         start.linkTo(parent.start, margin = 16.dp)
                     }
                 )
-                Text(text = title,
+                Text(text = film.title,
                     color = colorResource(R.color.heading_white),
                     fontSize = 36.sp,
                     modifier = Modifier.constrainAs(tvTitle) {
@@ -106,7 +92,7 @@ fun FilmPage(
                         top.linkTo(parent.top, margin = 252.dp)
                     }
                 )
-                Text(text = genres,
+                Text(text = film.genres,
                     color = colorResource(R.color.categories),
                     modifier = Modifier.constrainAs(tvTag) {
                         linkTo(
@@ -117,14 +103,14 @@ fun FilmPage(
                     }
                 )
                 Stars(
-                    rate = rate,
+                    rate = film.rate,
                     modifier = Modifier.constrainAs(ivStars) {
                         top.linkTo(tvTag.bottom, margin = 8.dp)
                         start.linkTo(parent.start, margin = 16.dp)
                     }
                 )
                 Text(
-                    text = reviews,
+                    text = film.reviews,
                     color = colorResource(R.color.disabled_text),
                     modifier = Modifier.constrainAs(tvReviews) {
                         linkTo(
@@ -181,7 +167,7 @@ fun FilmPage(
                         top.linkTo(tvReviews.bottom, margin = 24.dp)
                     }
                 )
-                Text(text = storyLine,
+                Text(text = film.storyLine,
                     color = colorResource(R.color.heading_white),
                     fontSize = 14.sp,
                     modifier = Modifier.constrainAs(storylineText) {
@@ -211,7 +197,7 @@ fun FilmPage(
                     top.linkTo(cast.bottom, margin = 6.dp)
                     bottom.linkTo(parent.bottom, margin = 16.dp)
                     width = fillToConstraints
-                }, actors = actors)
+                }, actors = film.actors)
             }
         }
     }

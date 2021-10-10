@@ -26,8 +26,8 @@ val actorsList = listOf(
     Actor("Chris Hemsworth", R.drawable.hemsworth)
 )
 
-@Preview(device = Devices.PIXEL_C, backgroundColor = 0xff191926)
-@Preview(backgroundColor = 0xff191926)
+@Preview(device = Devices.PIXEL_C, backgroundColor = 0xff191926, showBackground = true)
+@Preview(backgroundColor = 0xff191926, showBackground = true)
 @Composable
 fun ActorsPreview(modifier: Modifier = Modifier) {
     Actors(actors = actorsList, modifier = modifier)
@@ -48,7 +48,7 @@ fun Actors(actors: List<Actor>, modifier: Modifier = Modifier) {
     }
 }
 
-@Preview
+@Preview(backgroundColor = 0xff191926, showBackground = true)
 @Composable
 fun ActorItemPreview() = ActorItem(actor = Actor("Robert Downey Jr.", R.drawable.downey))
 
