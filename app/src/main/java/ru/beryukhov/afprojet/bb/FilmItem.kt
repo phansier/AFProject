@@ -1,6 +1,7 @@
 package ru.beryukhov.afprojet.bb
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -35,7 +36,8 @@ fun FilmItem(film: Film, isLiked: Boolean = false) {
     Card(
         onClick = { /*TODO*/ },
         backgroundColor = colorResource(R.color.background_card),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp),
+        modifier = Modifier.fillMaxWidth()
     ) {
         ConstraintLayout(Modifier.padding(4.dp)) {
             val (ivBackgroundPoster, ivMask, ageBg, tvAge, tvTitle, tvTag, tvReviewsCount, likedItem, ratingBar) = createRefs()
