@@ -1,5 +1,6 @@
 package ru.beryukhov.afprojet.bb
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,7 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -32,11 +34,12 @@ import ru.beryukhov.afprojet.Film
 fun MoviesPagePreview() =
     Scaffold(backgroundColor = colorResource(id = R.color.background)) {
         MoviesPage(
-            listOf(FILM, FILM, FILM, FILM, FILM, FILM, FILM, FILM),
+            List(32) { FILM },
             modifier = Modifier.fillMaxSize()
         )
     }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MoviesPage(films: List<Film>, modifier: Modifier = Modifier) {
     Column() {
@@ -94,9 +97,10 @@ fun MoviesPage(films: List<Film>, modifier: Modifier = Modifier) {
                 }
             )
         }
-        LazyColumn(
+        LazyVerticalGrid(
             contentPadding = PaddingValues(4.dp),
-            modifier = modifier
+            modifier = modifier,
+            cells = GridCells.Adaptive(minSize = 500.dp)
         ) {
             itemsIndexed(items = films,
                 itemContent = { index, item ->
