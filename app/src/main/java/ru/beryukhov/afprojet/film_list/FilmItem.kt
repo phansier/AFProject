@@ -29,13 +29,13 @@ import ru.beryukhov.afprojet.film_details.Stars
 @Preview
 @Preview(device = Devices.PIXEL_C)
 @Composable
-fun FilmItemPreview() = FilmItem(FILM)
+fun FilmItemPreview() = FilmItem(FILM, onClick = {})
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun FilmItem(film: Film, isLiked: Boolean = false) {
+fun FilmItem(film: Film, isLiked: Boolean = false, onClick: () -> Unit) {
     Card(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         backgroundColor = colorResource(R.color.background_card),
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier.fillMaxWidth()

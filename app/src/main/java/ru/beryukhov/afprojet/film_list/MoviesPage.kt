@@ -43,12 +43,13 @@ fun MoviesPagePreview() =
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ColumnScope.MoviesPage(films: List<Film>) {
+fun ColumnScope.MoviesPage(films: List<Film>, tempNavigationCallback: (Film) -> Unit = {}) {
     Column(modifier = Modifier.weight(1f)) {
         ConstraintLayout(
             Modifier
                 .padding(4.dp)
-                .fillMaxWidth()) {
+                .fillMaxWidth()
+        ) {
             val (ivTitle, listTitle, ivListType, tvListType) = createRefs()
             Image(painter = painterResource(id = R.drawable.ic_locator),
                 contentDescription = "",
@@ -106,7 +107,11 @@ fun ColumnScope.MoviesPage(films: List<Film>) {
         ) {
             itemsIndexed(items = films,
                 itemContent = { index, item ->
-                    FilmItem(film = item.copy(age = index.toString() ))
+                    with(item.copy(age = index.toString())) {
+                        FilmItem(
+                            film = this,
+                            onClick = { tempNavigationCallback(this) })
+                    }
                 })
         }
 

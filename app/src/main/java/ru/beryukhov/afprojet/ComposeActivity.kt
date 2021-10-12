@@ -109,7 +109,10 @@ fun PagesContent() {
                 }
                 Column {
                     when (filmState) {
-                        null -> MoviesPage(films = films)
+                        null -> MoviesPage(
+                            films = films,
+                            tempNavigationCallback = { filmState = it }
+                        )
                         else -> FilmPage(film = filmState!!)
                     }
                     if (!isShowRail()) {
