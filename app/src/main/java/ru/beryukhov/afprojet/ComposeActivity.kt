@@ -15,8 +15,10 @@ import androidx.compose.material.NavigationRailItem
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -24,7 +26,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import com.tromian.game.afproject.R
-import kotlinx.coroutines.flow.MutableStateFlow
 import ru.beryukhov.afprojet.film_details.FilmPage
 import ru.beryukhov.afprojet.film_list.MoviesPage
 
@@ -46,8 +47,6 @@ fun DefaultPreview() {
 
 val films = List(32) { index -> FILM.copy(age = index.toString()) }
 
-val filmStateFlow = MutableStateFlow<Film?>(null)
-
 @Composable
 fun isShowRail(): Boolean {
     val configuration = LocalConfiguration.current
@@ -61,7 +60,7 @@ fun isShowRail(): Boolean {
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PagesContent() {
-    val filmState by filmStateFlow.collectAsState()
+    var filmState: Film? by remember { mutableStateOf(null) }
     MyTheme {
         Scaffold(backgroundColor = colorResource(id = R.color.background)) {
             Row {
@@ -72,7 +71,7 @@ fun PagesContent() {
                     ) {
                         NavigationRailItem(selected = filmState == null,
                             onClick = {
-                                filmStateFlow.tryEmit(null)
+                                filmState = null
                             },
                             label = { Text(stringResource(id = R.string.menu_main_list)) },
                             icon = {
@@ -84,7 +83,7 @@ fun PagesContent() {
                         )
                         NavigationRailItem(selected = filmState != null,
                             onClick = {
-                                filmStateFlow.tryEmit(FILM)
+                                filmState = FILM
                             },
                             label = { Text(stringResource(id = R.string.menu_search)) },
                             icon = {
@@ -96,7 +95,7 @@ fun PagesContent() {
                         )
                         NavigationRailItem(selected = filmState != null,
                             onClick = {
-                                filmStateFlow.tryEmit(FILM)
+                                filmState = FILM
                             },
                             label = { Text(stringResource(id = R.string.menu_liked_movies)) },
                             icon = {
@@ -120,7 +119,7 @@ fun PagesContent() {
                         ) {
                             BottomNavigationItem(selected = filmState == null,
                                 onClick = {
-                                    filmStateFlow.tryEmit(null)
+                                    filmState = null
                                 },
                                 label = { Text(stringResource(id = R.string.menu_main_list)) },
                                 icon = {
@@ -132,7 +131,7 @@ fun PagesContent() {
                             )
                             BottomNavigationItem(selected = filmState != null,
                                 onClick = {
-                                    filmStateFlow.tryEmit(FILM)
+                                    filmState = FILM
                                 },
                                 label = { Text(stringResource(id = R.string.menu_search)) },
                                 icon = {
@@ -144,7 +143,7 @@ fun PagesContent() {
                             )
                             BottomNavigationItem(selected = filmState != null,
                                 onClick = {
-                                    filmStateFlow.tryEmit(FILM)
+                                    filmState = FILM
                                 },
                                 label = { Text(stringResource(id = R.string.menu_liked_movies)) },
                                 icon = {
