@@ -29,7 +29,7 @@ import com.tromian.game.afproject.R
 import ru.beryukhov.afprojet.FILM
 import ru.beryukhov.afprojet.Film
 
-@Preview(backgroundColor = 0xff191926, showBackground = true)
+@Preview(device = Devices.PIXEL_4, backgroundColor = 0xff191926, showBackground = true)
 @Preview(device = Devices.PIXEL_C, backgroundColor = 0xff191926, showBackground = true)
 @Composable
 fun MoviesPagePreview() =
@@ -102,7 +102,7 @@ fun ColumnScope.MoviesPage(films: List<Film>) {
         LazyVerticalGrid(
             contentPadding = PaddingValues(4.dp),
             modifier = Modifier.fillMaxHeight(),
-            cells = GridCells.Adaptive(minSize = 500.dp)
+            cells = GridCells.Adaptive(minSize = 150.dp)
         ) {
             itemsIndexed(items = films,
                 itemContent = { index, item ->
