@@ -1,8 +1,9 @@
 package ru.beryukhov.afprojet.film_details
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,24 +29,24 @@ import ru.beryukhov.afprojet.FILM
 import ru.beryukhov.afprojet.Film
 
 
-@Preview(device = Devices.PIXEL_C)
-@Preview
+@Preview(device = Devices.PIXEL_C, backgroundColor = 0xff191926, showBackground = true)
+@Preview(backgroundColor = 0xff191926, showBackground = true)
 @Composable
 fun FilmPagePreview() {
-    FilmPage(
-        film = FILM,
-        modifier = Modifier.background(color = colorResource(R.color.background))
-    )
+    Column {
+        FilmPage(
+            film = FILM,
+        )
+    }
 }
 
 @Composable
-fun FilmPage(
-    film: Film,
-    modifier: Modifier
+fun ColumnScope.FilmPage(
+    film: Film
 ) {
     rememberScrollState(0)
     LazyColumn(
-        modifier = modifier.fillMaxHeight()
+        modifier = Modifier.weight(1f)
     ) {
         item {
             ConstraintLayout(Modifier) {

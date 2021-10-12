@@ -3,8 +3,9 @@ package ru.beryukhov.afprojet.film_list
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -28,26 +29,28 @@ import com.tromian.game.afproject.R
 import ru.beryukhov.afprojet.FILM
 import ru.beryukhov.afprojet.Film
 
-@Preview(backgroundColor = 0xff191926, showBackground = true)
+@Preview(device = Devices.PIXEL_4, backgroundColor = 0xff191926, showBackground = true)
 @Preview(device = Devices.PIXEL_C, backgroundColor = 0xff191926, showBackground = true)
 @Composable
 fun MoviesPagePreview() =
     Scaffold(backgroundColor = colorResource(id = R.color.background)) {
-        MoviesPage(
-            List(32) { FILM },
-            modifier = Modifier.fillMaxSize()
-        )
+        Column {
+            MoviesPage(
+                List(32) { FILM }
+            )
+        }
     }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MoviesPage(films: List<Film>, modifier: Modifier = Modifier) {
-    Column() {
+fun ColumnScope.MoviesPage(films: List<Film>, tempNavigationCallback: (Film) -> Unit = {}) {
+    Column(modifier = Modifier.weight(1f)) {
         ConstraintLayout(
             Modifier
                 .padding(4.dp)
-                .fillMaxWidth()) {
-            val (ivTitle, listTitle, rvMovieList, ivListType, tvListType) = createRefs()
+                .fillMaxWidth()
+        ) {
+            val (ivTitle, listTitle, ivListType, tvListType) = createRefs()
             Image(painter = painterResource(id = R.drawable.ic_locator),
                 contentDescription = "",
                 modifier = Modifier
@@ -99,12 +102,16 @@ fun MoviesPage(films: List<Film>, modifier: Modifier = Modifier) {
         }
         LazyVerticalGrid(
             contentPadding = PaddingValues(4.dp),
-            modifier = modifier,
-            cells = GridCells.Adaptive(minSize = 500.dp)
+            modifier = Modifier.fillMaxHeight(),
+            cells = GridCells.Adaptive(minSize = 150.dp)
         ) {
             itemsIndexed(items = films,
                 itemContent = { index, item ->
-                    FilmItem(film = item.copy(age = index.toString() ))
+                    with(item.copy(age = index.toString())) {
+                        FilmItem(
+                            film = this,
+                            onClick = { tempNavigationCallback(this) })
+                    }
                 })
         }
 
