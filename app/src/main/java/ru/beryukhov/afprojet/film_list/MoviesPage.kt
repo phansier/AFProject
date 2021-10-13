@@ -12,24 +12,28 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.paging.LoadState
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.tromian.game.afproject.R
-import ru.beryukhov.afprojet.FILM
+import com.tromian.game.afproject.domain.MovieListType
+import com.tromian.game.afproject.presentation.viewmodels.MoviesViewModel
+import com.tromian.game.afproject.presentation.viewmodels.ViewModelFactory
+import kotlinx.coroutines.flow.Flow
 import ru.beryukhov.afprojet.Film
 
-@Preview(device = Devices.PIXEL_4, backgroundColor = 0xff191926, showBackground = true)
+/*@Preview(device = Devices.PIXEL_4, backgroundColor = 0xff191926, showBackground = true)
 @Preview(device = Devices.PIXEL_C, backgroundColor = 0xff191926, showBackground = true)
 @Composable
 fun MoviesPagePreview() =
@@ -39,11 +43,10 @@ fun MoviesPagePreview() =
                 List(32) { FILM }
             )
         }
-    }
+    }*/
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ColumnScope.MoviesPage(films: List<Film>, tempNavigationCallback: (Film) -> Unit = {}) {
+fun ColumnScope.MoviesPage(viewModelFactory: ViewModelFactory, tempNavigationCallback: (Film) -> Unit = {}) {
     Column(modifier = Modifier.weight(1f)) {
         ConstraintLayout(
             Modifier
@@ -100,20 +103,51 @@ fun ColumnScope.MoviesPage(films: List<Film>, tempNavigationCallback: (Film) -> 
                 }
             )
         }
-        LazyVerticalGrid(
-            contentPadding = PaddingValues(4.dp),
-            modifier = Modifier.fillMaxHeight(),
-            cells = GridCells.Adaptive(minSize = 150.dp)
-        ) {
-            itemsIndexed(items = films,
-                itemContent = { index, item ->
-                    with(item.copy(age = index.toString())) {
-                        FilmItem(
-                            film = this,
-                            onClick = { tempNavigationCallback(this) })
-                    }
-                })
-        }
+        MoviesGridVM(viewModelFactory, tempNavigationCallback)
 
     }
 }
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun MoviesGridClean(
+    films: Flow<PagingData<Film>>,
+    tempNavigationCallback: (Film) -> Unit
+) {
+    val filmListItems: LazyPagingItems<Film> = films.collectAsLazyPagingItems()
+
+    LazyVerticalGrid(
+        contentPadding = PaddingValues(4.dp),
+        modifier = Modifier.fillMaxHeight(),
+        cells = GridCells.Adaptive(minSize = 150.dp)
+    ) {
+        itemsIndexed(items = filmListItems,
+            itemContent = { _, item ->
+                item?.let {
+                    FilmItem(
+                        film = it,
+                        onClick = { tempNavigationCallback(it) })
+                }
+            })
+
+        filmListItems.apply {
+            when {
+                loadState.refresh is LoadState.Loading -> {
+                    //You can add modifier to manage load state when first time response page is loading
+                }
+                loadState.append is LoadState.Loading -> {
+                    //You can add modifier to manage load state when next response page is loading
+                }
+                loadState.append is LoadState.Error -> {
+                    //You can use modifier to show error message
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun MoviesGridVM(viewModelFactory: ViewModelFactory, tempNavigationCallback: (Film) -> Unit = {}) {
+    val viewModel: MoviesViewModel = viewModel(factory = viewModelFactory)
+    MoviesGridClean(films = viewModel.loadFilmList(MovieListType.NOW_PLAYING), tempNavigationCallback = tempNavigationCallback)
+}
+

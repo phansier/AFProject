@@ -19,6 +19,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
+import ru.beryukhov.afprojet.ComposeActivity
 
 @Component(modules = [AppModule::class])
 @Singleton
@@ -28,7 +29,8 @@ interface AppComponent {
     fun inject(fragment: FragmentMoviesDetails)
     fun inject(fragment: FragmentSearch)
     fun inject(fragment: FragmentFavourite)
-    fun inject(repository: MoviesDataRepository)
+
+    fun inject(activity: ComposeActivity)
 
     @Component.Factory
     interface Builder {

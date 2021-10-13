@@ -23,29 +23,34 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
 import com.tromian.game.afproject.R
+import com.tromian.game.afproject.appComponent
+import com.tromian.game.afproject.presentation.viewmodels.ViewModelFactory
+import javax.inject.Inject
 import ru.beryukhov.afprojet.film_details.FilmPage
 import ru.beryukhov.afprojet.film_list.MoviesPage
 
 class ComposeActivity : AppCompatActivity() {
+    @Inject
+    lateinit var factory: ViewModelFactory.Factory
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        appComponent.inject(this)
         setContent {
-            PagesContent()
+            PagesContent(factory.create())
         }
     }
 }
 
-@Preview()
+/*@Preview()
 @Preview(device = Devices.PIXEL_C)
 @Composable
 fun DefaultPreview() {
     PagesContent()
-}
+}*/
 
-val films = List(32) { index -> FILM.copy(age = index.toString()) }
+//val films = List(32) { index -> FILM.copy(age = index.toString()) }
 
 @Composable
 fun isShowRail(): Boolean {
@@ -59,7 +64,7 @@ fun isShowRail(): Boolean {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun PagesContent() {
+fun PagesContent(viewModelFactory: ViewModelFactory) {
     var filmState: Film? by remember { mutableStateOf(null) }
     MyTheme {
         Scaffold(backgroundColor = colorResource(id = R.color.background)) {
@@ -110,10 +115,10 @@ fun PagesContent() {
                 Column {
                     when (filmState) {
                         null -> MoviesPage(
-                            films = films,
+                            viewModelFactory = viewModelFactory,
                             tempNavigationCallback = { filmState = it }
                         )
-                        else -> FilmPage(film = filmState!!)
+                        else -> FilmPage(film = filmState!!, { filmState = null })
                     }
                     if (!isShowRail()) {
                         BottomNavigation(

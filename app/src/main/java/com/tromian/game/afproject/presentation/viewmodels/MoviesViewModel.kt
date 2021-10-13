@@ -4,38 +4,44 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.map
+import com.tromian.game.afproject.R
 import com.tromian.game.afproject.domain.MovieListType
 import com.tromian.game.afproject.domain.models.Movie
 import com.tromian.game.afproject.domain.repository.MoviesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import ru.beryukhov.afprojet.Film
+import ru.beryukhov.afprojet.film_details.actorsList
 
 class MoviesViewModel(
-    repository: MoviesRepository
+    private val repository: MoviesRepository
 ) : ViewModel() {
 
-    private var nowPlayingList = repository.getMovieListResultStream(MovieListType.NOW_PLAYING)
-        .toStateFlow()
-
-    private var popularList = repository.getMovieListResultStream(MovieListType.POPULAR)
-        .toStateFlow()
-
-    private var topRatedList = repository.getMovieListResultStream(MovieListType.TOP_RATED)
-        .toStateFlow()
-
-    private var upcomingList = repository.getMovieListResultStream(MovieListType.UPCOMING)
-        .toStateFlow()
-    
-    fun loadList(listType: MovieListType): StateFlow<PagingData<Movie>> {
-        return when (listType) {
-            MovieListType.UPCOMING -> upcomingList
-            MovieListType.POPULAR -> popularList
-            MovieListType.NOW_PLAYING -> nowPlayingList
-            MovieListType.TOP_RATED -> topRatedList
-        }
+    fun loadMovieList(listType: MovieListType): StateFlow<PagingData<Movie>> {
+        return repository.getMovieListResultStream(listType).toStateFlow()
     }
+
+    fun loadFilmList(listType: MovieListType): Flow<PagingData<Film>> =
+        loadMovieList(listType).map { it ->
+            it.map {
+                with(it) {
+                    Film(
+                        title = title,
+                        photo = /*TODO*/ R.drawable.film_placeholder,
+                        age = pgAge?.let { "$it+" }.orEmpty(),
+                        genres = genres.orEmpty(),
+                        rate = rating ?: 0,
+                        reviews = "$reviewCount reviews",
+                        storyLine = storyLine,
+                        actors = actorsList /*TODO*/
+                    )
+                }
+            }
+        }
 
     private fun Flow<PagingData<Movie>>.toStateFlow() = this.cachedIn(viewModelScope)
         .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())

@@ -6,9 +6,17 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.tromian.game.afproject.AppConstants.Companion.NETWORK_PAGE_SIZE
+import com.tromian.game.afproject.AppConstants.NETWORK_PAGE_SIZE
 import com.tromian.game.afproject.appComponent
-import com.tromian.game.afproject.data.db.*
+import com.tromian.game.afproject.data.db.MoviesDB
+import com.tromian.game.afproject.data.db.checkAdultContent
+import com.tromian.game.afproject.data.db.getPosterUrl
+import com.tromian.game.afproject.data.db.toActor
+import com.tromian.game.afproject.data.db.toGenre
+import com.tromian.game.afproject.data.db.toGenreEntity
+import com.tromian.game.afproject.data.db.toMovie
+import com.tromian.game.afproject.data.db.toMovieEntity
+import com.tromian.game.afproject.data.db.toTmdbType
 import com.tromian.game.afproject.data.network.models.JsonMovie
 import com.tromian.game.afproject.data.network.tmdbapi.ResponseWrapper
 import com.tromian.game.afproject.data.network.tmdbapi.TmdbAPI
@@ -30,16 +38,13 @@ import javax.inject.Inject
 class MoviesDataRepository @Inject constructor(
     private val service: TmdbAPI,
     private val localDB: MoviesDB,
-    private val context: Application
+    private val context: Application,
+    private val pagingSourceFactory: MoviePagingSource.Factory
 ) : MoviesRepository {
 
     private var genres: List<Genre>? = null
 
-    @Inject
-    lateinit var pagingSourceFactory: MoviePagingSource.Factory
-
     init {
-        context.appComponent.inject(this)
         if (genres == null) {
             CoroutineScope(Dispatchers.IO).launch {
                 getMovieGenreList()
@@ -67,7 +72,7 @@ class MoviesDataRepository @Inject constructor(
         }
     }
 
-    suspend fun getMovieGenreList() {
+    private suspend fun getMovieGenreList() {
         val localGenres = localDB.genreDao().getGenreList()
         if (localGenres.isNotEmpty()) {
             genres = localGenres.map {
