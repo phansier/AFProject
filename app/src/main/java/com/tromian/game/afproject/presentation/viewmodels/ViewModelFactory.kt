@@ -13,7 +13,7 @@ class ViewModelFactory @AssistedInject constructor(
     @Assisted("movieId") private val movieId: Int = 0,
     private val repository: MoviesRepository
 ) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         val viewModel = when (modelClass) {
             MoviesViewModel::class.java -> {
                 MoviesViewModel(repository)

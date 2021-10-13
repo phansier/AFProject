@@ -38,16 +38,13 @@ import javax.inject.Inject
 class MoviesDataRepository @Inject constructor(
     private val service: TmdbAPI,
     private val localDB: MoviesDB,
-    private val context: Application
+    private val context: Application,
+    private val pagingSourceFactory: MoviePagingSource.Factory
 ) : MoviesRepository {
 
     private var genres: List<Genre>? = null
 
-    @Inject
-    lateinit var pagingSourceFactory: MoviePagingSource.Factory
-
     init {
-        context.appComponent.inject(this)
         if (genres == null) {
             CoroutineScope(Dispatchers.IO).launch {
                 getMovieGenreList()

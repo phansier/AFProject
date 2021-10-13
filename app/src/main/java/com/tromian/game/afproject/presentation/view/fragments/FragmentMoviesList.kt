@@ -58,7 +58,7 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
         val rvMovieList = view.findViewById<RecyclerView>(R.id.rvMovieList)
         rvMovieList.adapter = adapter
         lifecycleScope.launchWhenStarted {
-            viewModel.loadList(listType)
+            viewModel.loadMovieList(listType)
                 .collectLatest {
                     adapter.submitData(it)
                 }
@@ -120,7 +120,7 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
     private fun listBySelectedTypeUpdated(listType: MovieListType): Boolean {
         tv_list_title.setText(setListTitleByType(listType))
         lifecycleScope.launch {
-            viewModel.loadList(listType)
+            viewModel.loadMovieList(listType)
                 .collectLatest {
                     adapter.submitData(it)
                 }
