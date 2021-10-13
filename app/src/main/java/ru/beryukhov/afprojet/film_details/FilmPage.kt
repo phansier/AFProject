@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.Dimension.Companion.fillToConstraints
+import coil.compose.rememberImagePainter
 import com.tromian.game.afproject.R
 import ru.beryukhov.afprojet.FILM
 import ru.beryukhov.afprojet.Film
@@ -59,6 +60,7 @@ fun ColumnScope.FilmPage(
                 val (imageView2, tvAge, tvTitle, tvTag, ivStars,
                     tvReviews, view, imageView7, tvBack, storyline, storylineText,
                     cast, list_actors) = createRefs()
+
                 Box(modifier = Modifier.constrainAs(imageView2) {
                     height = Dimension.value(298.dp)
                     top.linkTo(parent.top)
@@ -66,9 +68,14 @@ fun ColumnScope.FilmPage(
                     end.linkTo(parent.end)
                 }) {
                     Image(
-                        painter = painterResource(id = R.drawable.origh512),
-                        contentDescription = "",
+                        painter = rememberImagePainter(
+                            data = film.imageUrl,
+                            builder = {
+                                placeholder(R.drawable.film_placeholder)
+                            }
+                        ),
                         contentScale = ContentScale.Crop,
+                        contentDescription = null,
                         modifier = Modifier.fillMaxWidth()
                     )
                     Image(

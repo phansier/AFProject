@@ -1,6 +1,7 @@
 package ru.beryukhov.afprojet.film_list
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -10,6 +11,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
@@ -21,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import coil.compose.rememberImagePainter
 import com.tromian.game.afproject.R
 import ru.beryukhov.afprojet.FILM
 import ru.beryukhov.afprojet.Film
@@ -41,32 +44,32 @@ fun FilmItem(film: Film, isLiked: Boolean = false, onClick: () -> Unit) {
         modifier = Modifier.fillMaxWidth()
     ) {
         ConstraintLayout(Modifier.padding(4.dp)) {
-            val (ivBackgroundPoster, ivMask, ageBg, tvAge, tvTitle, tvTag, tvReviewsCount, likedItem, ratingBar) = createRefs()
-            Image(painter = painterResource(id = film.photo),
-                contentScale = ContentScale.Crop,
-                contentDescription = "",
-                modifier = Modifier.constrainAs(ivBackgroundPoster) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(tvTitle.top, 8.dp)
-                    width = Dimension.fillToConstraints
-                }
-            )
-            Image(painter = painterResource(id = R.drawable.mask),
-                contentScale = ContentScale.FillWidth,
-                contentDescription = "",
-                modifier = Modifier.constrainAs(ivMask) {
-                    linkTo(
-                        start = ivBackgroundPoster.start,
-                        end = ivBackgroundPoster.end,
-                        top = ivBackgroundPoster.top,
-                        bottom = ivBackgroundPoster.bottom,
-                        verticalBias = 1f
+            val (ivBackgroundPoster, ageBg, tvAge, tvTitle, tvTag, tvReviewsCount, likedItem, ratingBar) = createRefs()
+
+            Box(modifier = Modifier.constrainAs(ivBackgroundPoster) {
+                top.linkTo(parent.top)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                bottom.linkTo(tvTitle.top, 8.dp)
+                height = Dimension.value(200.dp)
+            }) {
+                Image(
+                    painter = rememberImagePainter(
+                        data = film.imageUrl,
+                        builder = {
+                            placeholder(R.drawable.film_placeholder)
+                        }
+                    ),
+                    contentScale = ContentScale.FillWidth,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxWidth()
                     )
-                    width = Dimension.fillToConstraints
-                }
-            )
+                Image(painter = painterResource(id = R.drawable.mask),
+                    contentScale = ContentScale.FillWidth,
+                    contentDescription = "",
+                    modifier = Modifier.fillMaxWidth().align(BottomCenter)
+                )
+            }
 
             Image(painter = painterResource(id = R.drawable.ic_rectangle),
                 contentDescription = "",

@@ -1,12 +1,10 @@
 package ru.beryukhov.afprojet
 
-import androidx.annotation.DrawableRes
-import com.tromian.game.afproject.R
 import ru.beryukhov.afprojet.film_details.Actor
 import ru.beryukhov.afprojet.film_details.actorsList
 
 data class Film(
-    @DrawableRes val photo: Int,
+    val imageUrl: String?= null,
     val title: String,
     val age: String,
     val genres: String,
@@ -22,7 +20,7 @@ private const val storylineString =
             "actions and restore balance to the universe."
 
 val FILM = Film(
-    photo = R.drawable.poster,
+    imageUrl = null,
     title = "Avengers: End Game",
     age = "13+",
     genres = "Action, Adventure, Fantasy",
