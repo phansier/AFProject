@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -25,7 +24,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.paging.LoadState
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.tromian.game.afproject.R
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import ru.beryukhov.afprojet.FILM
 import ru.beryukhov.afprojet.Film
 
@@ -41,7 +46,6 @@ fun MoviesPagePreview() =
         }
     }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ColumnScope.MoviesPage(films: List<Film>, tempNavigationCallback: (Film) -> Unit = {}) {
     Column(modifier = Modifier.weight(1f)) {
@@ -100,20 +104,44 @@ fun ColumnScope.MoviesPage(films: List<Film>, tempNavigationCallback: (Film) -> 
                 }
             )
         }
-        LazyVerticalGrid(
-            contentPadding = PaddingValues(4.dp),
-            modifier = Modifier.fillMaxHeight(),
-            cells = GridCells.Adaptive(minSize = 150.dp)
-        ) {
-            itemsIndexed(items = films,
-                itemContent = { index, item ->
-                    with(item.copy(age = index.toString())) {
-                        FilmItem(
-                            film = this,
-                            onClick = { tempNavigationCallback(this) })
-                    }
-                })
-        }
+        MoviesGridClean(flowOf(PagingData.from(films)), tempNavigationCallback)
 
+    }
+}
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun MoviesGridClean(
+    films: Flow<PagingData<Film>>,
+    tempNavigationCallback: (Film) -> Unit
+) {
+    val filmListItems: LazyPagingItems<Film> = films.collectAsLazyPagingItems()
+
+    LazyVerticalGrid(
+        contentPadding = PaddingValues(4.dp),
+        modifier = Modifier.fillMaxHeight(),
+        cells = GridCells.Adaptive(minSize = 150.dp)
+    ) {
+        itemsIndexed(items = filmListItems,
+            itemContent = { index, item ->
+                item?.copy(age = index.toString())?.let {
+                    FilmItem(
+                        film = it,
+                        onClick = { tempNavigationCallback(it) })
+                }
+            })
+
+        filmListItems.apply {
+            when {
+                loadState.refresh is LoadState.Loading -> {
+                    //You can add modifier to manage load state when first time response page is loading
+                }
+                loadState.append is LoadState.Loading -> {
+                    //You can add modifier to manage load state when next response page is loading
+                }
+                loadState.append is LoadState.Error -> {
+                    //You can use modifier to show error message
+                }
+            }
+        }
     }
 }

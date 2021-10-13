@@ -71,6 +71,7 @@ dependencies {
 
     // Paging Library
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+    implementation 'androidx.paging:paging-compose:1.0.0-alpha13'
 
     // Navigation Components
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
