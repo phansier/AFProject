@@ -2,7 +2,7 @@ package com.tromian.game.afproject.data.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.tromian.game.afproject.AppConstants.Companion.NETWORK_PAGE_SIZE
+import com.tromian.game.afproject.AppConstants.NETWORK_PAGE_SIZE
 import com.tromian.game.afproject.data.network.models.JsonMovie
 import com.tromian.game.afproject.data.network.tmdbapi.TmdbAPI
 import dagger.assisted.Assisted
