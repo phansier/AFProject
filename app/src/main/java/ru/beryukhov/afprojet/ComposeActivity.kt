@@ -118,7 +118,7 @@ fun PagesContent(viewModelFactory: ViewModelFactory) {
                             viewModelFactory = viewModelFactory,
                             tempNavigationCallback = { filmState = it }
                         )
-                        else -> FilmPage(film = filmState!!)
+                        else -> FilmPage(film = filmState!!, { filmState = null })
                     }
                     if (!isShowRail()) {
                         BottomNavigation(

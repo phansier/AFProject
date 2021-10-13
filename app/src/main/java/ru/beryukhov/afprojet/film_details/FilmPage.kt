@@ -9,10 +9,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,13 +40,15 @@ fun FilmPagePreview() {
     Column {
         FilmPage(
             film = FILM,
+            onClick = {}
         )
     }
 }
 
 @Composable
 fun ColumnScope.FilmPage(
-    film: Film
+    film: Film,
+    onClick: () -> Unit
 ) {
     rememberScrollState(0)
     LazyColumn(
@@ -130,9 +136,8 @@ fun ColumnScope.FilmPage(
                     }
                     .height(36.dp)
                 )
-                Image(
-                    painter = painterResource(id = R.drawable.back),
-                    contentDescription = "",
+                IconButton(
+                    onClick = onClick,
                     modifier = Modifier.constrainAs(imageView7) {
                         linkTo(
                             top = view.top,
@@ -140,11 +145,12 @@ fun ColumnScope.FilmPage(
                         )
                         start.linkTo(parent.start, margin = 16.dp)
                     }
-                )
-                Text(
-                    text = stringResource(R.string.text_back),
-                    color = colorResource(R.color.heading_white),
-                    fontSize = 16.sp,
+                        .testTag("FilmPageBack")
+                ) {
+                    Icon(painter = painterResource(id = R.drawable.back), contentDescription = "")
+                }
+                TextButton(
+                    onClick = onClick,
                     modifier = Modifier.constrainAs(tvBack) {
                         linkTo(
                             top = view.top,
@@ -152,10 +158,16 @@ fun ColumnScope.FilmPage(
                         )
                         linkTo(
                             start = imageView7.end, end = parent.end,
-                            startMargin = 4.dp, endMargin = 16.dp, bias = 0f
+                            startMargin = -12.dp, endMargin = 16.dp, bias = 0f
                         )
                     }
-                )
+                ) {
+                    Text(
+                        text = stringResource(R.string.text_back),
+                        color = colorResource(R.color.heading_white),
+                        fontSize = 16.sp,
+                    )
+                }
                 Text(text = stringResource(R.string.movie_storyline_header),
                     color = colorResource(R.color.heading_white),
                     fontSize = 14.sp,
