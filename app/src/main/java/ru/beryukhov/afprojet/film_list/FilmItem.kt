@@ -1,6 +1,7 @@
 package ru.beryukhov.afprojet.film_list
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -8,8 +9,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
@@ -21,7 +28,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import coil.compose.rememberImagePainter
 import com.tromian.game.afproject.R
+import kotlin.random.Random
 import ru.beryukhov.afprojet.FILM
 import ru.beryukhov.afprojet.Film
 import ru.beryukhov.afprojet.film_details.Stars
@@ -33,7 +42,8 @@ fun FilmItemPreview() = FilmItem(FILM, onClick = {})
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun FilmItem(film: Film, isLiked: Boolean = false, onClick: () -> Unit) {
+fun FilmItem(film: Film, isLiked: Boolean = randomBoolean(), onClick: () -> Unit) {
+    var liked: Boolean by remember { mutableStateOf(isLiked) }
     Card(
         onClick = onClick,
         backgroundColor = colorResource(R.color.background_card),
@@ -41,32 +51,35 @@ fun FilmItem(film: Film, isLiked: Boolean = false, onClick: () -> Unit) {
         modifier = Modifier.fillMaxWidth()
     ) {
         ConstraintLayout(Modifier.padding(4.dp)) {
-            val (ivBackgroundPoster, ivMask, ageBg, tvAge, tvTitle, tvTag, tvReviewsCount, likedItem, ratingBar) = createRefs()
-            Image(painter = painterResource(id = film.photo),
-                contentScale = ContentScale.Crop,
-                contentDescription = "",
-                modifier = Modifier.constrainAs(ivBackgroundPoster) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(tvTitle.top, 8.dp)
-                    width = Dimension.fillToConstraints
-                }
-            )
-            Image(painter = painterResource(id = R.drawable.mask),
-                contentScale = ContentScale.FillWidth,
-                contentDescription = "",
-                modifier = Modifier.constrainAs(ivMask) {
-                    linkTo(
-                        start = ivBackgroundPoster.start,
-                        end = ivBackgroundPoster.end,
-                        top = ivBackgroundPoster.top,
-                        bottom = ivBackgroundPoster.bottom,
-                        verticalBias = 1f
-                    )
-                    width = Dimension.fillToConstraints
-                }
-            )
+            val (ivBackgroundPoster, ageBg, tvAge, tvTitle, tvTag, tvReviewsCount, likedItem, ratingBar) = createRefs()
+
+            Box(modifier = Modifier.constrainAs(ivBackgroundPoster) {
+                top.linkTo(parent.top)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                bottom.linkTo(tvTitle.top, 8.dp)
+                height = Dimension.value(200.dp)
+            }) {
+                Image(
+                    painter = rememberImagePainter(
+                        data = film.imageUrl,
+                        builder = {
+                            placeholder(R.drawable.film_placeholder)
+                        }
+                    ),
+                    contentScale = ContentScale.FillWidth,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Image(
+                    painter = painterResource(id = R.drawable.mask),
+                    contentScale = ContentScale.FillWidth,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(BottomCenter)
+                )
+            }
 
             Image(painter = painterResource(id = R.drawable.ic_rectangle),
                 contentDescription = "",
@@ -132,15 +145,19 @@ fun FilmItem(film: Film, isLiked: Boolean = false, onClick: () -> Unit) {
                 },
                 fontSize = 11.sp
             )
-
-            Image(painter = painterResource(id = if (isLiked) R.drawable.ic_heart_liked else R.drawable.ic_heart),
-                contentDescription = "",
+            IconButton(
+                onClick = { liked = !liked },
                 modifier = Modifier.constrainAs(likedItem) {
                     top.linkTo(tvAge.top)
                     end.linkTo(parent.end, 8.dp)
                     bottom.linkTo(tvAge.bottom)
                 }
-            )
+            ) {
+                Image(
+                    painter = painterResource(id = if (liked) R.drawable.ic_heart_liked else R.drawable.ic_heart),
+                    contentDescription = "",
+                )
+            }
 
             Stars(
                 rate = film.rate,
@@ -154,4 +171,8 @@ fun FilmItem(film: Film, isLiked: Boolean = false, onClick: () -> Unit) {
             )
         }
     }
+}
+
+private fun randomBoolean(): Boolean {
+    return Random.nextInt() % 4 == 0
 }

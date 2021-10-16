@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.tromian.game.afproject.R
 import com.tromian.game.afproject.domain.MovieListType
 import com.tromian.game.afproject.domain.models.Movie
 import com.tromian.game.afproject.domain.repository.MoviesRepository
@@ -31,7 +30,7 @@ class MoviesViewModel(
                 with(it) {
                     Film(
                         title = title,
-                        photo = /*TODO*/ R.drawable.film_placeholder,
+                        imageUrl = imageUrl,
                         age = pgAge?.let { "$it+" }.orEmpty(),
                         genres = genres.orEmpty(),
                         rate = rating ?: 0,
