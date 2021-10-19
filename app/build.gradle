@@ -50,7 +50,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.1.0-alpha05"
+        kotlinCompilerExtensionVersion = "1.1.0-alpha06"
     }
 }
 
@@ -63,7 +63,7 @@ dependencies {
     def navigationVersion = "2.4.0-alpha10"
     def paging_version = "3.1.0-beta01"
     def dagger_version = "2.39.1"
-    def compose_version = "1.1.0-alpha05"
+    def compose_version = "1.1.0-alpha06"
 
     //Dagger
     implementation "com.google.dagger:dagger:$dagger_version"
@@ -71,7 +71,7 @@ dependencies {
 
     // Paging Library
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
-    implementation 'androidx.paging:paging-compose:1.0.0-alpha13'
+    implementation 'androidx.paging:paging-compose:1.0.0-alpha14'
 
     // Navigation Components
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
