@@ -25,15 +25,14 @@ Educational application, based on [public TMDB API](https://www.themoviedb.org/)
 
 <p align="center">
 
-  <a href="url"><img src="main_screen.png" align="left"  width="300" ></a>
+  <img src="main_screen.png" align="center"  width="200" >
 
-  <a href="url"><img src="main_screen_select.png" align="left" width="300" ></a>
+  <img src="main_screen_select.png" align="center" width="200" >
 
-  <a href="url"><img src="details.png" align="left" width="300" ></a>
+  <img src="details.png" align="center" width="200" >
 
-  <a href="url"><img src="search.png" align="left" width="300" ></a>
+  <img src="search.png" align="center" width="200" >
 
-  <a href="url"><img src="saved.png" width="300" ></a>
+  <img src="saved.png" align="center" width="200" >
 
 </p>
-
