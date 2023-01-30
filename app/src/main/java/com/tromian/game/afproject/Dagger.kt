@@ -3,7 +3,6 @@ package com.tromian.game.afproject
 
 import android.app.Application
 import android.util.Log
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.tromian.game.afproject.data.db.MoviesDB
 import com.tromian.game.afproject.data.network.tmdbapi.TmdbAPI
 import com.tromian.game.afproject.data.repository.MoviesDataRepository
@@ -88,7 +87,6 @@ class NetworkModule {
             .client(tmdbClient)
             .baseUrl(AppConstants.BASE_URL_TMDB)
             .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .build()
 
         return retrofit.create(TmdbAPI::class.java)

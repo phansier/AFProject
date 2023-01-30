@@ -1,13 +1,13 @@
 buildscript {
-    ext.kotlin_version = "1.5.31"
+    ext.kotlin_version = "1.8.0"
 
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        def navigationVersion = "2.4.0-alpha10"
-        classpath 'com.android.tools.build:gradle:7.0.3'
+        def navigationVersion = "2.5.3"
+        classpath "com.android.tools.build:gradle:7.4.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
     }

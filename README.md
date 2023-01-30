@@ -1,7 +1,7 @@
 # Android Fundamental test project
 
-[![Compose Version](https://img.shields.io/badge/Jetpack%20Compose-1.1.0--alpha06-yellow)](https://developer.android.com/jetpack/compose)
-[![Kotlin Version](https://img.shields.io/badge/Kotlin-1.5.31-blue.svg)](https://kotlinlang.org)
+[![Compose Version](https://img.shields.io/badge/Jetpack%20Compose-1.3.3-yellow)](https://developer.android.com/jetpack/compose)
+[![Kotlin Version](https://img.shields.io/badge/Kotlin-1.8.0-blue.svg)](https://kotlinlang.org)
 ![Android CI](https://github.com/phansier/AFProject/workflows/Android%20CI/badge.svg?branch=master)
 
 ## Partly rewritten in Compose
