@@ -5,6 +5,7 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.ExperimentalMaterialApi
@@ -19,10 +20,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import com.google.accompanist.themeadapter.material.MdcTheme
 import com.tromian.game.afproject.R
 import com.tromian.game.afproject.appComponent
 import com.tromian.game.afproject.presentation.viewmodels.ViewModelFactory
@@ -66,9 +69,9 @@ fun isShowRail(): Boolean {
 @Composable
 fun PagesContent(viewModelFactory: ViewModelFactory) {
     var filmState: Film? by remember { mutableStateOf(null) }
-    MyTheme {
+    MdcTheme {
         Scaffold(backgroundColor = colorResource(id = R.color.background)) {
-            Row {
+            Row(modifier = Modifier.padding(it)) {
                 if (isShowRail()) {
                     NavigationRail(
                         backgroundColor = colorResource(id = R.color.background_card),
@@ -118,7 +121,7 @@ fun PagesContent(viewModelFactory: ViewModelFactory) {
                             viewModelFactory = viewModelFactory,
                             tempNavigationCallback = { filmState = it }
                         )
-                        else -> FilmPage(film = filmState!!, { filmState = null })
+                        else -> FilmPage(film = filmState!!) { filmState = null }
                     }
                     if (!isShowRail()) {
                         BottomNavigation(

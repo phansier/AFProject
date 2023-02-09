@@ -107,7 +107,6 @@ fun ColumnScope.MoviesPage(viewModelFactory: ViewModelFactory, tempNavigationCal
 
     }
 }
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun MoviesGridClean(
     films: Flow<PagingData<Film>>,
