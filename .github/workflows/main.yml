@@ -26,4 +26,6 @@ jobs:
         run: echo tmdb_api_key=\"$TMDB_API_KEY\" > ./local.properties
       - name: Build with Gradle
         run: ./gradlew :app:assemble
+      - name: Detekt
+        run: make detekt
       
