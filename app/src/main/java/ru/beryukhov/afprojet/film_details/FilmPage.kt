@@ -30,6 +30,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.Dimension.Companion.fillToConstraints
 import coil.compose.rememberImagePainter
 import com.tromian.game.afproject.R
+import kotlinx.collections.immutable.toPersistentList
 import ru.beryukhov.afprojet.FILM
 import ru.beryukhov.afprojet.Film
 
@@ -49,11 +50,12 @@ fun FilmPagePreview() {
 @Composable
 fun ColumnScope.FilmPage(
     film: Film,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
     rememberScrollState(0)
     LazyColumn(
-        modifier = Modifier.weight(1f)
+        modifier = modifier.weight(1f)
     ) {
         item {
             ConstraintLayout(Modifier) {
@@ -217,7 +219,7 @@ fun ColumnScope.FilmPage(
                     top.linkTo(cast.bottom, margin = 6.dp)
                     bottom.linkTo(parent.bottom, margin = 16.dp)
                     width = fillToConstraints
-                }, actors = film.actors)
+                }, actors = film.actors.toPersistentList())
             }
         }
     }

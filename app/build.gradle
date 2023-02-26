@@ -52,6 +52,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.0"
     }
+    namespace 'com.tromian.game.afproject'
 }
 
 
@@ -129,4 +130,6 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.2.2")
 
     implementation("com.google.accompanist:accompanist-themeadapter-material:0.28.0")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
 }

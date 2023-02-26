@@ -18,6 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.tromian.game.afproject.R
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.toPersistentList
 
 val actorsList = listOf(
     Actor("Robert Downey Jr.", R.drawable.downey),
@@ -30,7 +32,7 @@ val actorsList = listOf(
 @Preview(backgroundColor = 0xff191926, showBackground = true)
 @Composable
 fun ActorsPreview(modifier: Modifier = Modifier) {
-    Actors(actors = actorsList, modifier = modifier)
+    Actors(actors = actorsList.toPersistentList(), modifier = modifier)
 }
 
 data class Actor(
@@ -39,7 +41,7 @@ data class Actor(
 )
 
 @Composable
-fun Actors(actors: List<Actor>, modifier: Modifier = Modifier) {
+fun Actors(actors: PersistentList<Actor>, modifier: Modifier = Modifier) {
     LazyRow(modifier = modifier.fillMaxWidth()) {
         itemsIndexed(items = actors,
             itemContent = { _, item ->
@@ -53,8 +55,8 @@ fun Actors(actors: List<Actor>, modifier: Modifier = Modifier) {
 fun ActorItemPreview() = ActorItem(actor = Actor("Robert Downey Jr.", R.drawable.downey))
 
 @Composable
-fun ActorItem(actor: Actor) {
-    ConstraintLayout(Modifier) {
+fun ActorItem(actor: Actor, modifier: Modifier = Modifier) {
+    ConstraintLayout(modifier = modifier) {
         val (photo, name) = createRefs()
         Image(painter = painterResource(id = actor.photo),
             contentDescription = "Actor's photo",

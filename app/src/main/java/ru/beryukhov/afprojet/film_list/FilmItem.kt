@@ -42,13 +42,13 @@ fun FilmItemPreview() = FilmItem(FILM, onClick = {})
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun FilmItem(film: Film, isLiked: Boolean = randomBoolean(), onClick: () -> Unit) {
+fun FilmItem(film: Film, modifier: Modifier = Modifier, isLiked: Boolean = randomBoolean(), onClick: () -> Unit) {
     var liked: Boolean by remember { mutableStateOf(isLiked) }
     Card(
         onClick = onClick,
         backgroundColor = colorResource(R.color.background_card),
         shape = RoundedCornerShape(8.dp),
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         ConstraintLayout(Modifier.padding(4.dp)) {
             val (ivBackgroundPoster, ageBg, tvAge, tvTitle, tvTag, tvReviewsCount, likedItem, ratingBar) = createRefs()

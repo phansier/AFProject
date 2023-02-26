@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.NavigationRail
@@ -25,9 +24,11 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.themeadapter.material.MdcTheme
 import com.tromian.game.afproject.R
 import com.tromian.game.afproject.appComponent
+import com.tromian.game.afproject.presentation.viewmodels.MoviesViewModel
 import com.tromian.game.afproject.presentation.viewmodels.ViewModelFactory
 import javax.inject.Inject
 import ru.beryukhov.afprojet.film_details.FilmPage
@@ -41,7 +42,7 @@ class ComposeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         appComponent.inject(this)
         setContent {
-            PagesContent(factory.create())
+            PagesContent(viewModel(factory = factory.create()))
         }
     }
 }
@@ -65,9 +66,8 @@ fun isShowRail(): Boolean {
     return screenWidth>screenHeight
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun PagesContent(viewModelFactory: ViewModelFactory) {
+fun PagesContent(viewModel: MoviesViewModel, modifier: Modifier = Modifier) {
     var filmState: Film? by remember { mutableStateOf(null) }
     MdcTheme {
         Scaffold(backgroundColor = colorResource(id = R.color.background)) {
@@ -118,7 +118,7 @@ fun PagesContent(viewModelFactory: ViewModelFactory) {
                 Column {
                     when (filmState) {
                         null -> MoviesPage(
-                            viewModelFactory = viewModelFactory,
+                            viewModel = viewModel,
                             tempNavigationCallback = { filmState = it }
                         )
                         else -> FilmPage(film = filmState!!) { filmState = null }

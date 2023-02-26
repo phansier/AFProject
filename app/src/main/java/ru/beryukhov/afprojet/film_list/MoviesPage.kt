@@ -1,6 +1,5 @@
 package ru.beryukhov.afprojet.film_list
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -21,7 +20,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
@@ -29,7 +27,6 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.tromian.game.afproject.R
 import com.tromian.game.afproject.domain.MovieListType
 import com.tromian.game.afproject.presentation.viewmodels.MoviesViewModel
-import com.tromian.game.afproject.presentation.viewmodels.ViewModelFactory
 import kotlinx.coroutines.flow.Flow
 import ru.beryukhov.afprojet.Film
 
@@ -46,8 +43,8 @@ fun MoviesPagePreview() =
     }*/
 
 @Composable
-fun ColumnScope.MoviesPage(viewModelFactory: ViewModelFactory, tempNavigationCallback: (Film) -> Unit = {}) {
-    Column(modifier = Modifier.weight(1f)) {
+fun ColumnScope.MoviesPage(viewModel: MoviesViewModel, modifier: Modifier = Modifier, tempNavigationCallback: (Film) -> Unit = {}) {
+    Column(modifier = modifier.weight(1f)) {
         ConstraintLayout(
             Modifier
                 .padding(4.dp)
@@ -103,7 +100,7 @@ fun ColumnScope.MoviesPage(viewModelFactory: ViewModelFactory, tempNavigationCal
                 }
             )
         }
-        MoviesGridVM(viewModelFactory, tempNavigationCallback)
+        MoviesGridVM(viewModel, tempNavigationCallback)
 
     }
 }
@@ -145,8 +142,7 @@ private fun MoviesGridClean(
 }
 
 @Composable
-fun MoviesGridVM(viewModelFactory: ViewModelFactory, tempNavigationCallback: (Film) -> Unit = {}) {
-    val viewModel: MoviesViewModel = viewModel(factory = viewModelFactory)
+fun MoviesGridVM(viewModel: MoviesViewModel, tempNavigationCallback: (Film) -> Unit = {}) {
     MoviesGridClean(films = viewModel.loadFilmList(MovieListType.NOW_PLAYING), tempNavigationCallback = tempNavigationCallback)
 }
 
